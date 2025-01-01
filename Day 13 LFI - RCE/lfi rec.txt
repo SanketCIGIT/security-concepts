@@ -1,0 +1,41 @@
+
+
+short list of the most common ones:
+
+    /etc/passwd
+    /etc/crontab
+    /proc/mounts
+    /etc/issue
+	/etc/os-release
+    /etc/resolv.conf
+    /etc/hostname
+    /etc/group
+
+The /proc folder:
+
+	/proc/cpuinfo
+	/proc/meminfo
+    /proc/version 	- OS Version
+    /proc/net/tcp 	- open TCP ports
+    /proc/net/udp 	- open UDP ports
+    /proc/sched_debug 	- can be used to retrieve running processes
+    /proc/mounts 	- Mounted devices
+
+
+    /proc/self/cmdline - command line that triggered the running process
+    /proc/self/environ - environment variables accessible to the process
+    /proc/self/cwd 	- current working directory of the process
+    /proc/self/fd/[n] 	- files opened by the process
+    /proc/self/exe 	- link to the executable file
+
+
+
+
+
+
+/var/log/access.log
+/var/log/access_log
+/var/log/httpd/access_log
+/var/log/apache2/access_log
+
+

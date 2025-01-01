@@ -1,0 +1,90 @@
+Ah, I understand now. If you don't know the exact HTML selector or which element will display the flag, you need a more general approach that will check for any change on the page after each refresh. In this case, you’ll be looking for any element that appears or changes when the flag is revealed.
+
+Here's how you can adjust the logic:
+
+New Plan: General Approach
+Track the refreshes as before.
+After each refresh, check for any newly added elements or changes in the content.
+Once you detect a change (likely when the flag appears), stop the refresh process and capture the flag.
+Solution with JavaScript:
+If you don't know the exact selector of the flag, one approach is to look for changes in the DOM (Document Object Model). Specifically, you can track the number of elements before and after a refresh, or check if there is a new text that wasn't there before.
+
+Here’s a more generalized approach to detect any change on the page:
+
+General JavaScript Approach to Detect New Elements or Changes:
+javascript
+Copy code
+let counter = 0;
+let previousContent = document.body.innerHTML;  // Save the current state of the page's content
+
+function refreshAndCheck() {
+    counter++;
+
+    // Wait for the page to load, then check if the content has changed.
+    setTimeout(function() {
+        let currentContent = document.body.innerHTML;  // Get the current state of the page after refresh
+        
+        // If the content has changed (i.e., new elements or flag appeared), we assume the flag is there
+        if (currentContent !== previousContent) {
+            console.log("Content changed on refresh #" + counter + ". Check for the flag!");
+            // Optionally, capture the flag content
+            let flag = document.body.innerText;  // This gets the full text of the page
+            console.log("Page content after refresh:", flag);
+            // You can modify this to look for specific keywords or phrases in the text
+        } else {
+            console.log("Refresh #" + counter + " complete. No flag yet...");
+            location.reload();  // Refresh the page if no change detected
+        }
+        
+        // Update the previous content to the current content after refresh
+        previousContent = currentContent;
+    }, 2000);  // Wait for 2 seconds to ensure the page has loaded before checking for changes
+}
+
+refreshAndCheck();  // Start the process
+How This Works:
+Tracking Changes in Page Content:
+
+previousContent stores the HTML content of the page before the refresh.
+After the page is refreshed, the currentContent is compared with the previous content.
+If the content has changed (likely due to the flag appearing), it prints a message and logs the new content.
+Looking for Changes:
+
+This approach doesn’t assume you know where the flag will appear. Instead, it compares the whole page's content to detect a change after a refresh.
+When the content changes, this is likely when the flag has appeared (since the page should look the same before the 999th refresh).
+Handling Refreshes:
+
+If no change is detected (i.e., the page still looks the same), the script will refresh the page again and check after 2 seconds.
+Once a change is detected (meaning the flag is likely revealed), the process will stop, and you can check the page manually for the flag.
+Why This Works:
+Content Change: Even if you don’t know the exact element or selector where the flag will appear, you can still detect when something changes on the page. This might be a new element, a change in text, or other modifications in the HTML that indicate the flag is now visible.
+
+Generalized Approach: This method is agnostic to the specific flag location. It only compares the page content before and after each refresh to look for any changes.
+
+Possible Enhancements:
+Look for Specific Text: If the flag is a specific text (e.g., a code or a phrase), you can search for the flag’s text within currentContent instead of comparing the whole HTML. For example:
+
+javascript
+Copy code
+if (currentContent.includes("CTF{")) {
+    console.log("Flag found:", currentContent.match(/CTF\{.*\}/)[0]);
+}
+This will search for a text pattern like CTF{...} and capture the flag if it's detected in the page's content.
+
+Look for New Elements: If you suspect the flag is revealed in a new element (such as a hidden div or span), you can check for new elements by comparing the number of elements before and after a refresh:
+
+javascript
+Copy code
+let previousElementCount = document.body.getElementsByTagName("*").length;
+
+if (document.body.getElementsByTagName("*").length > previousElementCount) {
+    console.log("New element detected after refresh #" + counter);
+}
+Summary:
+Automate the refreshes and track when the content of the page changes.
+Detect changes in the page's content or structure (new elements, text, etc.).
+When the page changes (which likely happens when the flag is revealed), stop the process and manually capture the flag.
+This general approach allows you to track the changes on the page, even if you don’t know the exact element or selector where the flag is revealed.
+
+
+

@@ -1,0 +1,19 @@
+subfinder -d juspay.in -silent -nc -pc ~/.config/subfinder/provider-config.yaml  -all -recursive | tee subfinder.txt
+
+assetfinder -subs-only juspay.in | anew assetfinder.txt
+
+cat *.txt | rev | cut -d'.' -f1-3 | rev | anew l1.txt
+
+subfinder -dL l1.txt -silent -nc -pc ~/.config/subfinder/provider-config.yaml  -all -recursive | tee subfinder_l1.txt
+
+rm l1.txt
+
+cat *.txt | anew subs-all.txt
+
+cat subs-all.txt | httpx -silent -nc -random-agent | anew alive-web.txt
+
+wafw00f -i alive-web.txt -o waf.txt
+
+cat waf.txt | sed -e 's/^[ \t]*//' -e '/(None)/d' | anew behind-cdn.txt
+
+cat waf.txt | sed 's/^[ \t]*//' | grep "None (None)" | anew no_waf.txt

@@ -1,0 +1,22 @@
+Manual: 
+```````
+1. check the latest version of GO
+
+# VERSION=$(curl -ks -L https://golang.org/VERSION?m=text|head -1)
+# ARCH="amd64"
+
+2. Download:
+# cd ~/
+# wget "https://golang.org/dl/${VERSION}.linux-${ARCH}.tar.gz"
+# tar -xzf "${VERSION}.linux-${ARCH}.tar.gz"
+
+# vim ~/.bashrc [BASH SHELL] OR # vim ~/.zshrc [ZSH SHELL]
+export GOROOT=$HOME/go
+export GOPATH=$HOME/go/packages
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
+:wq
+
+# source ~/.bashrc    OR       # source ~/.zshrc
+
+# go version		[ TO CHECK ]

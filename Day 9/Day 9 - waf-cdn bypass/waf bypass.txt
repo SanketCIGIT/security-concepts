@@ -1,0 +1,102 @@
+# cat all_subdomain.txt | httpx-toolkit -random-agent -silent -p 8080,8001,8009, 280,591,583,832,981,1311,2480,4444,4445,4567,5000,5104,5800,7000, 7001,7002,8008,8042,8088,8222,8243,8280,8281,8333,8530,8531,8887,8888,8443,8834,9080,9443,9981,12043,12046,16080,18091,10443,18092,81,300,593,1010,1311,2082,2087,2095,2096,3000,3128,3333,4243,4711,4712,4993,5108,6543,7396,7474,8000,8001,8008,8014,8069,8080,8081,8090,8091,8118,8123,8172,8443,8500,8880,8888,8983,9000,9043,9060,9090,9091,9200,9800,12443,20720,28017 | anew aliveurls.txt
+
+
+___________________________
+
+
+RUNME.sh
+subfinder -d bigbasket.com -silent -nc -pc ~/.config/subfinder/provider-config.yaml  -all -recursive | tee subfinder.txt
+assetfinder -subs-only bigbasket.com | anew assetfinder.txt
+cat *.txt | rev | cut -d'.' -f1-3 | rev | anew l1.txt
+subfinder -dL l1.txt -silent -nc -pc ~/.config/subfinder/provider-config.yaml  -all -recursive | tee subfinder_l1.txt
+rm l1.txt
+cat *.txt | anew subs-all.txt
+cat subs-all.txt | httpx -silent -nc -random-agent | anew alive-web.txt
+wafw00f -i alive-web.txt -o waf.txt
+cat waf.txt | sed -e 's/^[ \t]*//' -e '/(None)/d' | anew behind-cdn.txt
+cat waf.txt | sed 's/^[ \t]*//' | grep "None (None)" | anew no_waf.txt
+
+
+-------------------------------------------------
+
+
+CDN/WAF Bypass:
+```````````````````
+Verify teh targets behind CDN
+
+HECK WAF/CDN:
+``````````````
+# wafw00f -i alive-web.txt -o waf.txt
+# cat waf.txt | sed -e 's/^[ \t]*//' -e '/(None)/d'
+# cat waf.txt | sed 's/^[ \t]*//' | grep "None (None)" 
+
+Collect: with or without WAF URLs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. SHODAN SEARCH DORKs:
+```````````````````````
+ssl:target
+ssl.cert.subject.CN:target 200
+
+if IP found: nmap --script ssl-cert -p443 x.x.x.x
+
+
+
+
+
+
+2. Favicon:
+```````````
+#!/bin/bash
+target=$1
+hash=$(curl -ks "${target}" | python3 -c 'import mmh3,sys,codecs; print(mmh3.hash(codecs.encode(sys.stdin.buffer.read(),"base64")))')
+printf "HASH: http.favicon.hash:${hash}\n"
+
+
+
+Collect favicons: https://favicons.teamtailor-cdn.com
+https://bistro.blinkit.com/assets/favicon-kKgM3Mnb.ico
+Gen Hash: https://favicon-hash.kmsec.uk
+
+Search on engines:
+    shodan: http.favicon.hash:HASH
+
+3. Historical DNS:
+````````````````````
+https://viewdns.info >>>>> IP History
+
+https://viewdns.info/iphistory/?domain=ftp.blinkit.com
+
+4. SPF Record:
+``````````````
+# host -t txt target
+    OR
+https://mxtoolbox.com/SuperTool.aspx
+    OR
+https://securitytrails.com/domain/target.tld/history/a
+
+5. 
+
+[+] virustotal
+
+curl -ks "https://www.virustotal.com/vtapi/v2/domain/report?domain=target.tld&api_key=API_KEY" | jq -r '.. | .ip_address? // empty' | egrep -Eo '([0-9]{1,3\.){3}[0-9]{1,3}'
+
+[+] AlienVault
+
+curl -ks "https://otx.alienvault.com/api/v1/indicators/hostname/TARGET.TLD/url_list?limit=500&page=1" | jq -r '.url_list[]?.result?.urlworker?.ip // empty' | egrep -o '([0-9]{1,3\.){3}[0-9]{1,3}'
+
+[+] URLScan
+
+curl -ks "https://urlscan.io/api/v1/search/?q=domain:TARGET.TLD&size=10000" | jq -r '.results[]?.page?.ip // empty' | egrep -o '([0-9]{1,3\.){3}[0-9]{1,3}'

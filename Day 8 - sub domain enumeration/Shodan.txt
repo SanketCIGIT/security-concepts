@@ -1,0 +1,107 @@
+OSINT:
+```````
+vuln:CVE-2024-4577 country:pk
+vuln:CVE-2024-4577 os:linux country:pk
+vuln:CVE-2024-4577 product:Apache country:pk
+
+
+
+
+
+
+[+] SHODAN:
+```````````
+DORKs:
+``````
+ssl:datto.com
+hostname:datto.com
+ssl.cert.subject.CN:datto.com
+ssl.cert.expired:true hostname:datto.com
+
+SHODAN CLI: [API]
+``````````````````
+# pip3 install -U shodan  [ Install/Upgrade ]
+
+# shodan --help
+# shodan mode -h
+
+# shodan init <API_KEY>
+Successfully initialized
+
+# shodan info
+Query credits available: 98
+Scan credits available: 100
+-----------
+SEARCH:
+````````
+# shodan search <QUERY>
+
+press 'q' to quit.
+
+# shodan search --limit 10 hostname:datto.com
+# shodan search --limit 10 hostname:datto.com --field ip_str
+# shodan search --limit 10 hostname:datto.com --fields os
+# shodan search --limit 10 hostname:datto.com --fields port
+
+COUNT: [API required, query credits are not required ]
+
+# shodan count hostname:datto.com
+
+
+DOWNLOAD:
+``````````
+# shodan download datto_shodan --limit 10 ssl:datto.com
+Search query:                   ssl:datto.com
+Total number of results:        1420
+Query credits left:             88
+Output file:                    datto_shodan.json.gz
+  [####################################]  100%
+Saved 10 results into file datto_shodan.json.gz
+
+
+
+
+zcat datto_shodan.json.gz | jq -r 'select(.ip_str != null)|.ip_str'
+zcat datto_shodan.json.gz | jq -r 'select(.os != null)|.os'
+zcat gov.pk_shodan.json.gz | jq -r 'select(.vulns != null)|.vulns | to_entries[] | select(.key != null) |.key'
+zcat gov.pk_shodan.json.gz | jq -r 'select(.product != null)|.product'
+zcat gov.pk_shodan.json.gz | jq -r 'select(.hostnames != null)|.hostnames[]'
+zcat gov.pk_shodan.json.gz | jq -r 'select(.port != null)|.port'
+zcat gov.pk_shodan.json.gz | jq -r 'select(.server != null)|.server'
+zcat gov.pk_shodan.json.gz | jq -r 'select(.org != null)|.org'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+Blind Command Injection:
+========================
+1. What is Blind Command Injection?
++++++++++++++++++++++++++++++++++++
+a. Blind command injection occurs when the system call that's being made does not return the response. Sometimes the user inputs a test command to try to see if the server is vulnerable to command injection, the command is executed by the server-side code on the server and the code doesn't output the response.
+
+b. I'll explain it below.
+
+<?php
+if (isset($_GET["username"])) {
+		$username =$_GET["username"];
+		$command = "awk -F: '{print $1}' /etc/passwd | grep $username";
+		$returned_user = exec($command);
+if ($returned_user == "") {
+	$result = "<div class='alert alert-danger' role='alert'>
+		<strong>Error!</strong> User <b>$username</b> was not found.</div>";
+	} else {
+	 	$result = "<div class='alert alert-danger' role='alert'>
+		<strong>Success!</strong> User <b>$username</b> was found on the <b>system</b>.</div>";
+	}
+		echo $result;
+	}
+?>
+
+the above snippet is doing the following:
+
+i. Checking if the parameter "username" is set
+
+ii. If it is, then the variable $username gets what was passed into the input field
+
+iii. The variable $command gets the system command "awk -F: '{print $1}' /etc/passwd | grep $username"; where $username is what was entered in step 2.  
+
+This command is printing out the list of users from /etc/passwd and then selecting the one that was entered.  Note that this is not executing anything yet.
+
+iv. Variable $returned_user then gets the result/return value of the function exec($command).
+
+The rest of the code is fairly straightforward; set $result to a Bootstrap danger alert class if nothing was found in /etc/passwd and a success alert class if something was found.
+
+2. Ways to Detect Blind Command Injection
+``````````````````````````````````````````
+a. Blind command injection occurs when the response of the HTTP request is not returned.
+
+So here are a few ways to tell whether you have blind command injection or not.
+-> sleep 10
+-> PING: Ping can help you tell whether you have blind command injection or not. ping will cause the page to continue loading until the command has completed.  So if you send a ping with 10 ICMP packets, the page should be loading for about 10 seconds.  If you send 20(!) packets, it should take about 20 seconds, and so on.
+
+Payload:
+---
+ping -c 10 127.0.0.1
+
+-> Redirection of Output: You can attempt to redirect the output of a command to a file, then, using the browser, navigate to the page where the file is stored. We all know the > Bash operator redirects output to a file or process so you could try redirecting the output of id, whoami, netstat, ip addr or other useful command to see if you can see the results.
+
+whoami > data.txt
+
+https://insecure-app.com/cmd/user/data.txt

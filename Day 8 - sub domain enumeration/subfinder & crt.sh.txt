@@ -1,0 +1,41 @@
+########################################################################################################
+
+SUBFINDER
+
+subfinder -d servify.com -silent -nc -pc ~/.config/subfinder/provider-config.yaml -all -recursive | tee all.txt
+
+
+#######################################################################################################
+
+CRT.sh containes all the information of CNs all websites in the world
+
+	Search %.cdac.in  (look for CN)
+
+We need to collect this CN data - https://crt.sh/?q=%25.cdac.in&output=json
+ 
+curl -ks "https://crt.sh/?q=%25.cdac.in&output=json"
+
+cat data.json | jq   	 (jq cmd beautify the single line json data)
+cat data.json | jq -r '.[].name'	 (it can also provide required data by mentioning key)(-r raw)
+
+
+curl -ks "https://crt.sh/?q=%25.cdac.in&output=json" | jq -r '.[].common_name' | grep -v "cdac.in$" | grep -v "^\*" | sort -u | wc -l
+
+#########################################################################################################
+
+Script on CRT data to get common_name and name_value
+
+
+#########################################################################################################
+
+Pre built tool for subdomain enumeration
+
+Dheeraj -> subzz
+
+#########################################################################################################
+
+curl -ks https://xyz.datto.com:8080 -L -I
+
+
+
+

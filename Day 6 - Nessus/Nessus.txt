@@ -1,0 +1,28 @@
+Nessus Vulnerability Scanner:
+-----------------------------
+1. signup for activation key
+2. download for your OS
+3. Install it:
+
+# dpkg -i Nessus-10.1.1-debian6_amd64.deb
+
+4.  Start Service Nessus Scanner:
+
+# /bin/systemctl start nessusd.service
+ 
+5. Then go to 
+
+https://127.0.0.1:8834
+
+Severity [ impact ]
+```````````````````
+p5 - informative
+p4 - low
+p3 - medium
+p2 - high
+p1 - critical
+
+VRT:
+````
+https://bugcrowd.com/vulnerability-rating-taxonomy
+___________

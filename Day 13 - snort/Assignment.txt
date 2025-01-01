@@ -1,0 +1,15 @@
+
+alert tcp any any -> $HOME_NET 21 (msg:"FTP root user dectected"; )
+
+Assignment: 
+Detect ftp login successful 
+Detect if someone logs in from 'root' user
+
+Answer: 
+Assignment: 
+Detect ftp login successful 
+alert tcp $HOME_NET any -> $EXTERNAL_NET 21 (msg:"FTP login successful"; flow:to_server,established; sid:1000001; rev:1;)
+
+Detect if someone logs in from 'root' user
+alert tcp $HOME_NET any -> $EXTERNAL_NET 21 (msg:"FTP login attempt from root user"; flow:to_server,established; content:"USER "; content:"root";
+sid:1000002; rev:1;)

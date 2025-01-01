@@ -1,0 +1,10 @@
+# docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
+
+wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip
+
+unzip sonar-scanner-cli-6.2.1.4610-linux-x64.zip
+
+
+ln -s /root/di/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner /bin/sonar-scanner
+------------------------------
+sonar-scanner -Dsonar.projectKey=demo123 -Dsonar.sources=. -Dsonar.host.url=http://192.168.47.23:9000 -Dsonar.token=sqp_4c72ac9e7f8ac10fbebb786f10a8b256333837e4

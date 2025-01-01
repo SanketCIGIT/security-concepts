@@ -1,0 +1,151 @@
+=> Recon: [auth|unauth]
+------------------------
+1) Passive 
+2) Active
+
+
+
+
+
+
+
+
+
+
+
+Sub-Domain Enum:
+````````````````
+
+Target: *.servify.com
+Out-Of-Scope: 
+
+
+
+
+app.admin.blog.example.com
+3rd  2nd  1st  rootDN  TLD
+
+
+
+admin.domain.tld
+ad.admin.domain.tld
+
+
+Target:
+-------
+Scope:
+``````
+*.servify.com
+
+
+▶ subfinder	[https://github.com/projectdiscovery/subfinder]
+
+Install:
+`````````
+# go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+
+Config:
+```````
+ls -a ~/
+
+.config
+
+
+
+
+
+
+
+# subfinder -ls [To view the sources that require API keys]
+
+level-1 enum:
+`````````````
+# subfinder -d domain.tld -v 
+
+# subfinder -d domain.tld -t 2000 -all -recursive --silent 
+
+API Keys are Free Of Cost and has a Limited number of request:
+--------------------------------------------------------------
+binaryedge 			[https://app.binaryedge.io/sign-up]
+censys				[https://censys.io/register]
+certspotter			[https://sslmate.com/signup?for=certspotter_api]
+dnsdb				[https://www.farsightsecurity.com/dnsdb-community-edition/]
+github				[https://github.com/join]
+intelx				[https://intelx.io/signup]
+passivetotal			[https://community.riskiq.com/home]
+securitytrails			[https://securitytrails.com/app/signup]
+shodan				[https://account.shodan.io/login]
+spyse				[https://spyse.com/user/registration]
+urlscan				[https://urlscan.io/user/signup]
+virustotal			[https://www.virustotal.com/gui/join-us]
+zoomeye				[https://sso.telnet404.com/accounts/register/]
+
+# vim ~/.config/subfinder/provider-config.yaml
+
+ADD ALL THE APIs
+
+RUN>>>>
+
+# subfinder -d apsis.com -all -pc ~/.config/subfinder/provider-config.yaml -recursive --silent | anew all.txt | rev | cut -d"." -f1-3 | rev | tee 1st.txt
+
+# subfinder -dL 1st.txt -all -recursive --silent | anew all.txt | rev | cut -d"." -f1-4 | rev | anew 2nd.txt
+
+# subfinder -dL 1st.txt -all -recursive --silent | anew all.txt rev | cut -d"." -f1-5 | rev | anew 3rd.txt
+
+NOTE: https://github.com/tomnomnom/anew
+
+
+▶ https://crt.sh 
+```````````````````
+
+#!/bin/bash
+function Help()
+{
+   # Display Help
+   echo "Options:"
+   echo ""
+   echo "-h     Help"
+   echo "-d     Search Domain Name       | Example: $0 -d hackerone.com"
+   echo ""
+}
+function Domain() {
+        curl -s "https://crt.sh?q=%.${req}&output=json" | jq ".[].common_name,.[].name_value"| cut -d'"' -f2 | sed 's/\\n/\n/g' | sed 's/\*.//g'| sed -r 's/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})//g' |egrep "(.*)\.${req}$" |sort -u
+        org=$(echo ${req} | cut -d. -f1)
+    curl -s "https://crt.sh?q=%.${org}&output=json" | jq ".[].common_name"| cut -d'"' -f2 | sed 's/\\n/\n/g' | sed 's/\*.//g'| sed -r 's/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})//g' | egrep "(.*)\.${req}$" |sort -u
+
+}
+if [ -z $1 ]
+        then
+                Help
+                exit
+        else
+                req=$2
+		shift
+
+fi
+
+while getopts "h|d|" option; do
+   case $option in
+      h) # display Help
+         Help
+         ;;
+      d) # Search Domain Name
+         Domain
+         ;;
+     *) # Invalid option
+          Help
+          ;;
+
+   esac
+done
+
+# bash crt.sh -d domain.tld
+
+
+
+
+
+
+
+
+

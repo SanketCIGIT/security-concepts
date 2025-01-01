@@ -1,0 +1,21 @@
+Metasploit Framework:
+````````````````````````
+LanguAge: Ruby
+Database: postgresql
+
+GUI: armitage  ||  cobalt-Striker
+CLI: msfconsole || msfpro
+WebUI: Same for Both
+
+Org: Rapid7
+Github: https://github.com/rapid7/metasploit-framework
+
+
+Attacker: KALI
+
+Victims:
+`````````
+Linux/Unix
+Windows
+Android
+Web Servers

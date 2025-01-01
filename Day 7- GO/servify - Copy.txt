@@ -1,0 +1,68 @@
+Servify 
+########################
+
+- A front end server wont have real IPs and IPs in same network range (Common IP addr)
+
+- Both can be load balancers hosting same website
+
+- Reverse lookup wont be possible if there is shared hosting
+- Word press gives service to host websites on their servers
+
+AWS <------ WordPress <--------- Client (Servify)
+
+- .com .in .tech all running on AWS
+
+
+A & PTR Record  -> identify Hosting
+SOA Record 	-> identify backend original server
+TXT Record 	-> check if target domain is using mail spamming protection
+
+In TXT record look for 
+1. SPF (Sender policy framework)
+2. DKF (Domain Key Identified Mail)
+3. DMARC (Domain based Message Auth, Reporting and Conformance)
+
+First check MX record, if present, check TXT record
+
+cat targets.txt | xargs -I@ -P100 bash -c "host -t mx @ "
+
+Servify 
+########################
+
+- A front end server wont have real IPs and IPs in same network range (Common IP addr)
+
+- Both can be load balancers hosting same website
+
+- Reverse lookup wont be possible if there is shared hosting
+- Word press gives service to host websites on their servers
+
+AWS <------ WordPress <--------- Client (Servify)
+
+- .com .in .tech all running on AWS
+
+
+A & PTR Record  -> identify Hosting
+SOA Record 	-> identify backend original server
+TXT Record 	-> check if target domain is using mail spamming protection
+
+
+In TXT record look for 
+
+1. SPF (Sender policy framework)
+
+2. DKF (Domain Key Identified Mail)
+
+3. DMARC (Domain based Message Auth, Reporting and Conformance)
+
+
+
+First check MX record, if present, check TXT record
+
+----------------------------------------------------------------------------------------
+## Multi Threading to check for domain which have MX record and does not have TXT record
+
+cat targets.txt | xargs -I@ -P100 bash -c "host -t mx @ | grep -v 'has no MX record' | cut -d' ' -f1 | sort -u" | xargs -I@ -P100 bash -c "host -t txt @ | grep 'no TXT record' | cut -d' ' -f1"
+
+-----------------------------------------------------------
+DNS Dumpster - They will send your requests to the mentioned server and give all records of target domain' ie Passive DNS recon 
+DNS Enumeration

