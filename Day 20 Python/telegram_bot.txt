@@ -1,0 +1,56 @@
+!pip3 install python-telegram-bot==13
+!apt update -qq
+!apt install dnsutils -y -qq
+#########Importing basic libraries############
+from telegram.ext import *
+import subprocess as ss
+
+#########initialize API token - Telegram#############
+telegram_token = '7048999836:AAEZKyKfst2gpjiYgI-s13GmoKGGW0wNqQs'
+
+#########creating objects to perform a task###########
+updater = Updater(telegram_token, use_context=True)
+#updater = Application.builder().token(telegram_token).build()
+dispatcher = updater.dispatcher
+
+#########The next step is to create the functionalities that we need to display in the Telegram BOT,##########
+#creating functionalities
+def message_handler(update, context):
+    # Get the message from the update
+    message = update.message
+
+    # Print the message to the console
+    subs = ss.getoutput("{}".format(message.text))
+    if subs:
+        data = subs.split("\n")
+        for i in data:
+            update.message.reply_text(i)
+def start(update, context):
+  name = update.effective_user.first_name
+  update.message.reply_text("Hi!! {}".format(name))
+  update.message.reply_text('Hello! Welcome to h311a BOT! Enjoy the resource!')
+  update.message.reply_text('Type /help for the content to display!')
+  update.message.reply_text('Happy Hacking!')
+def help(update, context):
+  update.message.reply_text(
+      """
+      /start -> Welcome to the gabbar's BOT!
+      /help -> This particular message
+      /hack_domain -> Provide target domain
+      /contact -> contact information
+      """)
+def hack_domain(update, context,user_input):
+    update.message.reply_text('Enter target domain name:', )
+
+def contact(update, context):
+  update.message.reply_text('Twitter Follow: https://twitter.com/Dheerajmadhukar')
+
+###############Lastly, we need to update the functionalities with the commands we need to give it in BOT###############
+dispatcher = updater.dispatcher
+updater.dispatcher.add_handler(CommandHandler('start', start))
+updater.dispatcher.add_handler(CommandHandler('help', help))
+updater.dispatcher.add_handler(CommandHandler('hack_domain', hack_domain))
+updater.dispatcher.add_handler(CommandHandler('contact',contact))
+updater.dispatcher.add_handler(MessageHandler(Filters.text, message_handler))
+updater.start_polling()  # Start the bot
+updater.idle() # Wait for the script to be stopped; this will stop the bot

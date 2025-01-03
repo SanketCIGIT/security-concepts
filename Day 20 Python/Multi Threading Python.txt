@@ -1,0 +1,36 @@
+#!/usr/bin/python3
+import threading, time
+
+def func1(name1):
+    print("Thread {}: running for next 5 secs".format(name1))
+    time.sleep(5)
+    print("Thread {}: finishing".format(name1))
+    print("---------------------------")
+def func2(name2):
+    print("Thread {}: running for next 4 secs ".format(name2))
+    time.sleep(4)
+    print("Thread {}: finishing".format(name2))
+    print("---------------------------")
+def func3(name3):
+    print("Thread {}: running for next 3 secs".format(name3))
+    time.sleep(3)
+    print("Thread {}: finishing".format(name3))
+    print("---------------------------")
+
+
+start = time.perf_counter()
+
+t1 = threading.Thread(target=func1, args=[1])
+t2 = threading.Thread(target=func2, args=[2])
+t3 = threading.Thread(target=func3, args=[3])
+
+t1.start()
+t2.start()
+t3.start()
+t1.join()
+t2.join()
+t3.join()
+
+end = time.perf_counter()
+print('Execution Time: {}'.format(end-start))
+print("All done")

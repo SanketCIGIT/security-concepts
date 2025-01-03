@@ -1,0 +1,6 @@
+import requests as rr
+url = "https://webhook.site/49c86175-3669-4e11-81cf-07de5c487aa6"
+h = {"User-Agent":"DITISS","CDAC":"END"}
+data = rr.get(url,timeout=10, headers=h)
+print(data.status_code)
+print(data.text)
